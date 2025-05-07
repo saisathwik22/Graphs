@@ -1,5 +1,19 @@
 // Google,Amazon, Microsoft
 
+// we can also create our own graph Map using given adj matrix.
+// unordered_map<int, vector<int>> adjList;
+// for(int i = 0; i < n; i++) {
+//   for(int j = 0; j < n; j++) {
+//     if(adj[i][j] == 1) {
+//       adjList[i].push_back(j);
+//       adjList[j].push_back(i);
+//     }
+//   }
+// }
+// OR else we can use the given input adj itself.
+
+// DFS :
+
 int n;
 void DFS(vector<vector<int>>& adj, int u, vector<bool>& visited) {
   visited[u] = true;
@@ -21,3 +35,40 @@ int numOfProvinces(vector<vector<int>> adj, int V) {
   }
   return count;
 }
+
+// BFS :
+
+int n;
+void bfs(vector<vector<int>>& adj, int u, vector<bool>& visited) {
+  queue<int> q;
+  q.push(u);
+  visited[u] = true;
+  while(!q.empty()) {
+    int u = q.front();
+    q.pop();
+    for(int v = 0; v < n; v++) {
+      if(adj[u][v] == 1 && !visited[v]) {
+        visited[v] = true;
+        q.push(v);
+      }
+    }
+  }
+}
+    
+int findCircleNum(vector<vector<int>>& isConnected) {
+  n = isConnected.size();
+        
+  vector<bool> visited(n, false);
+  int count = 0;
+  for(int i = 0; i < n; i++) {
+    if(!visited[i]) {
+      bfs(isConnected, i, visited);
+      count++;
+    }
+  }
+  return count;
+}
+
+
+
+ 
