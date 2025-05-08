@@ -10,6 +10,7 @@
 - Cycle Detection in Directed graph using DFS
 - Cycle Detection in Directed graph using BFS - **Kahn's Algorithm**
 - Number Of Provinces using DFS & BFS
-- Course Scheduler I using BFS & DFS
+- Course Schedule I using BFS & DFS
+- Course Schedule II using BFS & DFS
 
 ### Platforms : **Leetcode** | **Geeks For Geeks**
