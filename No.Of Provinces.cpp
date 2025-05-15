@@ -11,7 +11,7 @@
 //   }
 // }
 // OR else we can use the given input adj itself.
-
+// *************************************************** C++ ***************************************************
 // DFS :
 
 int n;
@@ -69,6 +69,61 @@ int findCircleNum(vector<vector<int>>& isConnected) {
   return count;
 }
 
+// ********************************************* JAVA *************************************************
+// DFS Approach
+class Solution {
+    int n;
+    public void DFS(int[][] adj, int u, boolean[] visited) {
+        visited[u] = true;
+        for(int v = 0; v < n; v++) {
+            if(!visited[v] && adj[u][v] == 1) {
+                DFS(adj, v, visited);
+            }
+        }
+    }
+    public int findCircleNum(int[][] isConnected) {
+        n = isConnected.length;
+        boolean[] visited = new boolean[n];
+        int count = 0;
+        for(int i = 0; i < n; i++) {
+            if(!visited[i]) {
+                count++;
+                DFS(isConnected, i, visited);
+            }
+        }
+        return count;
+    }
+}
+// BFS Approach
+class Solution {
+    int n;
+    public void bfs(int[][] adj, int u, boolean[] visited) {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(u);
+        visited[u] = true;
+        while(!q.isEmpty()) {
+            int curr = q.poll();
+            for(int v = 0; v < n; v++) {
+                if(adj[curr][v] == 1 && !visited[v]) {
+                    visited[v] = true;
+                    q.add(v);
+                }
+            }
+        }
+    }
+    public int findCircleNum(int[][] isConnected) {
+        n = isConnected.length;
+        boolean[] visited = new boolean[n];
+        int count = 0;
 
+        for(int i = 0; i < n; i++) {
+            if(!visited[i]) {
+                bfs(isConnected, i, visited);
+                count++;
+            }
+        }
+        return count;
+    }
+}
 
  
