@@ -4,7 +4,7 @@
 // topological sort only possible for Directed Acyclic graphs,
 // if topological sort returns true, output true, else false;
 // because for all the courses to be completed, graph shouldn't contain any cycles....
-
+// *********************************** C++ ***********************************************************
 // BFS Approach - using BFS cycle check - Kahn's Algo (TOPO SORT)
 bool topoSortCheck(unordered_map<int, vector<in>>& adj, int n, vector<int>& indegree) {
   queue<int> q;
@@ -74,3 +74,75 @@ bool isCompleted(int N, vector<vector<int>> prereq) {
         }
         return true;
     }
+
+// ************************************************ JAVA ************************************************
+//  BFS approach (kahns algo)
+class Solution {
+    public boolean topoSortCheck(Map<Integer, List<Integer>> adj, int n, int[] indegree) {
+        Queue<Integer> q = new LinkedList<>();
+        int count = 0;
+        for(int i = 0; i < n; i++) {
+            if(indegree[i] == 0) {
+                count++;
+                q.offer(i);
+            }
+        }
+        while(!q.isEmpty()) {
+            int u = q.poll();
+            for(int v : adj.getOrDefault(u, new ArrayList<>())) {
+                indegree[v]--;
+                if(indegree[v] == 0) {
+                    count++;
+                    q.offer(v);
+                }
+            }
+        }
+        return count == n;
+    }
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+        int[] indegree = new int[numCourses];
+
+        for(int[] pair : prerequisites) {
+            int a = pair[0];
+            int b = pair[1];
+            adj.computeIfAbsent(b, k->new ArrayList<>()).add(a);
+            indegree[a]++;
+        }
+        return topoSortCheck(adj, numCourses, indegree);
+    }
+}
+// DFS Appraoch
+class Solution {
+    public boolean isCycleDFS(Map<Integer, List<Integer>> adj, int u, boolean[] visited, boolean[] inRecursion) {
+        visited[u] = true;
+        inRecursion[u] = true;
+
+        for(int v : adj.getOrDefault(u, new ArrayList<>())) {
+            if(!visited[v] && isCycleDFS(adj, v, visited, inRecursion)) {
+                return true;
+            } else if(inRecursion[v]) {
+                return true;
+            }
+        }
+        inRecursion[u] = false;
+        return false;
+    }
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+        for(int[] pair : prerequisites) {
+            int a = pair[0];
+            int b = pair[1];
+            adj.computeIfAbsent(b, k->new ArrayList<>()).add(a);
+        }
+        boolean[] visited = new boolean[numCourses];
+        boolean[] inRecursion = new boolean[numCourses];
+
+        for(int i = 0; i < numCourses; i++) {
+            if(!visited[i] && isCycleDFS(adj, i, visited, inRecursion)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
