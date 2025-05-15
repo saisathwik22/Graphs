@@ -2,6 +2,7 @@
 // A graph is bipartite if:
 // you are able to color nodes of graph with 2 colors such that no two adjacent nodes have same color.
 
+// *************************************** C++ ********************************************************
 // DFS Approach:
 bool isBipartiteDFS(unordered_map<int, vector<int>>& adj, int currNode, vector<int>& color, int currNodeColor) {
   color[currNode] = currNodeColor;
@@ -77,3 +78,66 @@ bool isBipartite(int V, vector<vector<int>> edges) {
   }
   return true;
 }
+// ********************************************************  JAVA *************************************************************
+// DFS Approach:
+class Solution {
+    public boolean dfs(Map<Integer, List<Integer>> graph, int node, int color[], int currColor) {
+        color[node] = currColor;
+        for(int v : graph.get(node)) {
+            if(color[v] == currColor) {
+                return false;
+            }
+            if(color[v] == -1) {
+                if(!dfs(graph, v, color, 1 - currColor)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean isBipartite(int V, int[][] edges) {
+        // Code here
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+        for(int i = 0; i < V; i++) {
+            adj.put(i, new ArrayList<>());
+        }
+        for(int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+        int[] color = new int[V];
+        Arrays.fill(color, -1);
+        for(int i = 0; i < V; i++) {
+            if(color[i] == -1) {
+                if(!dfs(adj, i, color, 1)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+// BFS Appraoch
+ Map<Integer, List<Integer>> adj = new HashMap<>();
+        for(int i = 0; i < V; i++) {
+            adj.put(i, new ArrayList<>());
+        }
+        for(int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+        int[] color = new int[V];
+        Arrays.fill(color, -1);
+        for(int i = 0; i < V; i++) {
+            if(color[i] == -1) {
+                if(!dfs(adj, i, color, 1)) {
+                    return false;
+                }
+            }
+        }
+        return true;
