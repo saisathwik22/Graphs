@@ -81,9 +81,9 @@ bool isBipartite(int V, vector<vector<int>> edges) {
 // ********************************************************  JAVA *************************************************************
 // DFS Approach:
 class Solution {
-    public boolean dfs(Map<Integer, List<Integer>> graph, int node, int color[], int currColor) {
+    public boolean dfs(int[][] graph, int node, int color[], int currColor) {
         color[node] = currColor;
-        for(int v : graph.get(node)) {
+        for(int v : graph[node]) {
             if(color[v] == currColor) {
                 return false;
             }
@@ -95,23 +95,14 @@ class Solution {
         }
         return true;
     }
-    public boolean isBipartite(int V, int[][] edges) {
+    public boolean isBipartite(int[][] edges) {
         // Code here
-        Map<Integer, List<Integer>> adj = new HashMap<>();
-        for(int i = 0; i < V; i++) {
-            adj.put(i, new ArrayList<>());
-        }
-        for(int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
-            adj.get(u).add(v);
-            adj.get(v).add(u);
-        }
+        int V = edges.length;
         int[] color = new int[V];
         Arrays.fill(color, -1);
         for(int i = 0; i < V; i++) {
             if(color[i] == -1) {
-                if(!dfs(adj, i, color, 1)) {
+                if(!dfs(edges, i, color, 1)) {
                     return false;
                 }
             }
@@ -119,7 +110,6 @@ class Solution {
         return true;
     }
 }
-
 // BFS Appraoch
 class Solution {
     public boolean bfs(int[][] adj, int currNode, int[] color) {
