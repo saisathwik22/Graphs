@@ -121,23 +121,37 @@ class Solution {
 }
 
 // BFS Appraoch
- Map<Integer, List<Integer>> adj = new HashMap<>();
-        for(int i = 0; i < V; i++) {
-            adj.put(i, new ArrayList<>());
+class Solution {
+    public boolean bfs(int[][] adj, int currNode, int[] color) {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(currNode);
+        color[currNode] = 1;
+        while(!q.isEmpty()) {
+            int u = q.poll();
+            for(int v : adj[u]) {
+                if(color[v] == color[u]) {
+                    return false;
+                } else if(color[v] == -1) {
+                    color[v] = 1 - color[u];
+                    q.add(v);
+                }
+            }
         }
-        for(int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
-            adj.get(u).add(v);
-            adj.get(v).add(u);
-        }
+        return true;
+    }
+    public boolean isBipartite(int[][] edges) {
+        // Code here
+        int V = edges.length;
+        
         int[] color = new int[V];
         Arrays.fill(color, -1);
         for(int i = 0; i < V; i++) {
             if(color[i] == -1) {
-                if(!dfs(adj, i, color, 1)) {
+                if(!bfs(edges, i, color)) {
                     return false;
                 }
             }
         }
         return true;
+    }
+}
