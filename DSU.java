@@ -9,6 +9,49 @@
 // parent array stores parents of all nodes.
 // union(a, b) == (a)--->(b) means, parent[a] = b;
 
+// *******************  JAVA ********************************************************
+class DisjointSet {
+    int[] parent;
+    int[] rank;
+
+    public DisjointSet(int n) {
+        parent = new int[n];
+        rank = new int[n];
+
+        // Initially, every node is its own parent
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            rank[i] = 0;
+        }
+    }
+
+    // Path Compression
+    public int find(int i) {
+        if (i != parent[i]) {
+            parent[i] = find(parent[i]); // Recursively compress path
+        }
+        return parent[i];
+    }
+
+    // Union by Rank
+    public void union(int x, int y) {
+        int xParent = find(x);
+        int yParent = find(y);
+
+        if (xParent == yParent) return; // Already in the same set
+
+        if (rank[xParent] > rank[yParent]) {
+            parent[yParent] = xParent;
+        } else if (rank[xParent] < rank[yParent]) {
+            parent[xParent] = yParent;
+        } else {
+            parent[xParent] = yParent;
+            rank[yParent]++;
+        }
+    }
+}
+
+// ***********************************  C++ *********************************************************
 int find(int i, vector<int>& parent) {
   if(i == parent[i]) 
     return i;
