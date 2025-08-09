@@ -44,3 +44,30 @@ class Node {
     }
 }
 */
+
+class Solution {
+    public Node cloneGraph(Node node) {
+        if(node == null) return null;
+
+        Map<Node, Node> mp = new HashMap<>();
+        Queue<Node> q = new LinkedList<>();
+
+        Node clone_node = new Node(node.val);
+        mp.put(node, clone_node);
+        q.offer(node);
+
+        while(!q.isEmpty()) {
+            Node curr = q.poll();
+
+            for(Node n : curr.neighbors) {
+                if(!mp.containsKey(n)) {
+                    Node clone_neighbor = new Node(n.val);
+                    mp.put(n, clone_neighbor);
+                    q.offer(n);
+                }
+                mp.get(curr).neighbors.add(mp.get(n));
+            }
+        }
+        return clone_node;
+    }
+}
